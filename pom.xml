@@ -49,6 +49,7 @@
     </dependencies>
 
     <build>
+        <finalName>spring-batch</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
