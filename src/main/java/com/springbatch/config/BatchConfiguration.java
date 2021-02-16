@@ -26,14 +26,14 @@ import java.sql.SQLException;
 @Configuration
 @EnableBatchProcessing
 public class BatchConfiguration {
-//    @Value("${spring.datasource.driver-class-name}")
-//    private String driver;
-//    @Value("${spring.datasource.url}")
-//    private String url;
-//    @Value("${spring.datasource.data-username}")
-//    private String username;
-//    @Value("${spring.datasource.data-password}")
-//    private String password;
+    @Value("${db.cityweb.driver}")
+    private String driver;
+    @Value("${db.cityweb.url}")
+    private String url;
+    @Value("${db.cityweb.username}")
+    private String username;
+    @Value("${db.cityweb.password}")
+    private String password;
 
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
@@ -45,10 +45,10 @@ public class BatchConfiguration {
     @Bean
     public DataSource dataSource() {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/spring-batch?characterEncoding=UTF-8");
-        dataSource.setUsername("postgres");
-        dataSource.setPassword("postgres");
+        dataSource.setDriverClassName(driver);
+        dataSource.setUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
 
         return dataSource;
     }
@@ -70,11 +70,11 @@ public class BatchConfiguration {
 
     @Bean
     public FlatFileItemWriter<User> writer(){
-        FlatFileItemWriter<User> writer = new FlatFileItemWriter<User>();
+        FlatFileItemWriter<User> writer = new FlatFileItemWriter<>();
         writer.setResource(new ClassPathResource("output/users.csv"));
-        writer.setLineAggregator(new DelimitedLineAggregator<User>() {{
+        writer.setLineAggregator(new DelimitedLineAggregator<>() {{
             setDelimiter(",");
-            setFieldExtractor(new BeanWrapperFieldExtractor<User>() {{
+            setFieldExtractor(new BeanWrapperFieldExtractor<>() {{
                 setNames(new String[] { "id", "name" });
             }});
         }});
